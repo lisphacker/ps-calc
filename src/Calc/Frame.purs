@@ -21,7 +21,7 @@ import Calc.Button as Button
 
 type State = Unit
 
-data Query2 a = ButtonClicked2 a
+data Query a = ButtonClicked a
 
 type Input = Unit
 type Output = Unit
@@ -30,10 +30,10 @@ data Slot = ButtonSlot Key
 derive instance eqButtonSlot :: Eq Slot
 derive instance ordButtonSlot :: Ord Slot
 
-makeButtonSlot :: forall m. Key -> H.ParentHTML Query2 Button.Query Slot m
-makeButtonSlot k = HH.slot (ButtonSlot k) Button.button k (\_ -> Just $ ButtonClicked2 unit)
+makeButtonSlot :: forall m. Key -> H.ParentHTML Query Button.Query Slot m
+makeButtonSlot k = HH.slot (ButtonSlot k) Button.button k (\_ -> Just $ ButtonClicked unit)
 
-frame :: forall m. H.Component HH.HTML Query2 Input Output m
+frame :: forall m. H.Component HH.HTML Query Input Output m
 frame = H.parentComponent { initialState: const initialState
                           , render: render
                           , eval: eval
@@ -43,7 +43,7 @@ frame = H.parentComponent { initialState: const initialState
           initialState :: State
           initialState = unit
 
-          render :: State -> H.ParentHTML Query2 Button.Query Slot m
+          render :: State -> H.ParentHTML Query Button.Query Slot m
           render _ = HH.div_
                      [
                        HH.table_
@@ -79,6 +79,6 @@ frame = H.parentComponent { initialState: const initialState
                        ]
                      ]
 
-          eval :: Query2 ~> H.ParentDSL State Query2 Button.Query Slot Output m
+          eval :: Query ~> H.ParentDSL State Query Button.Query Slot Output m
           eval = case _ of
-            ButtonClicked2 qp -> pure qp
+            ButtonClicked qp -> pure qp
