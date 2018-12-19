@@ -9,6 +9,7 @@
     "halogen",
     "halogen-css",
     "maybe",
+    "numbers",
     "prelude",
     "psci-support"
   ]
